@@ -39,7 +39,10 @@ export default function Appbar() {
               <Button color="inherit" onClick={logout}>Déconnexion</Button>
             </Box>
           ) : (
-            <Button color="inherit" component={Link} to="/login">Connexion</Button>
+            <Box>
+              <Button color="inherit" component={Link} to="/login" sx={{ mr: 2 }}>Connexion</Button>
+              <Button color="inherit" component={Link} to="/signup">S'inscrire</Button>
+            </Box>
           )}
           <Menu
             anchorEl={anchorEl}

@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "type": "chrome",
+            "name": "chrome",
+            "request": "launch",                        
+            "runtimeExecutable":"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+            "runtimeArgs": [                
+                "--auto-open-devtools-for-tabs",
+                "--new-window", 
+                "--user-data-dir=${workspaceFolder}/chrome/"
+              ],
+            "url": "http://127.0.0.1:3000/",
+            "webRoot": "${workspaceFolder}"            
+        }
+    ]
+}

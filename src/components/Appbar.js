@@ -54,7 +54,7 @@ export default function Appbar() {
               <>
                 <MenuItem component={Link} to="/dashboard">Dashboard</MenuItem>
                 <MenuItem component={Link} to="/budget">Définir Budget</MenuItem>
-                <MenuItem component={Link} to="/expenses">Dépenses</MenuItem>
+                <MenuItem component={Link} to="/expenses">Opérations</MenuItem>
                 <MenuItem component={Link} to="/transfer">Transfert</MenuItem>
               </>
             )}

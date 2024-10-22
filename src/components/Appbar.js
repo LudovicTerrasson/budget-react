@@ -2,11 +2,12 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Box, AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Appbar() {
   const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate(); // Ajouter useNavigate ici
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -14,6 +15,11 @@ export default function Appbar() {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout(); // Appel de la fonction de déconnexion
+    navigate('/'); // Redirection vers la page d'accueil
   };
 
   return (
@@ -36,7 +42,7 @@ export default function Appbar() {
           {user ? (
             <Box>
               <Typography variant="body1" sx={{ mr: 2 }}>{user.name}</Typography>
-              <Button color="inherit" onClick={logout}>Déconnexion</Button>
+              <Button color="inherit" onClick={handleLogout}>Déconnexion</Button> {/* Modifier ici */}
             </Box>
           ) : (
             <Box>
@@ -57,11 +63,10 @@ export default function Appbar() {
               <MenuItem key="expenses" component={Link} to="/expenses">Opérations</MenuItem>,
               <MenuItem key="transfer" component={Link} to="/transfer">Transfert</MenuItem>
             ]}
-
           </Menu>
-
         </Toolbar>
       </AppBar>
     </Box>
   );
 }
+

@@ -50,12 +50,14 @@ export default function Appbar() {
             onClose={handleMenuClose}
           >
             <MenuItem component={Link} to="/">Accueil</MenuItem>
+
             {user && [
               <MenuItem key="dashboard" component={Link} to="/dashboard">Dashboard</MenuItem>,
               <MenuItem key="budget" component={Link} to="/budget">Définir Budget</MenuItem>,
-              <MenuItem key="expenses" component={Link} to="/expenses">Dépenses</MenuItem>,
+              <MenuItem key="expenses" component={Link} to="/expenses">Opérations</MenuItem>,
               <MenuItem key="transfer" component={Link} to="/transfer">Transfert</MenuItem>
             ]}
+
           </Menu>
 
         </Toolbar>

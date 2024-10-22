@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Container, Paper, Typography, TextField, Button } from '@mui/material';
+import { Container, Paper, Typography, TextField, Button, Snackbar } from '@mui/material';
+import { useAuth } from '../context/AuthContext'; // Import du contexte d'authentification
 
 export default function BudgetPage() {
+  const { user } = useAuth(); // Récupération de l'utilisateur connecté
   const [totalBudget, setTotalBudget] = useState('');
   const [coursesBudget, setCoursesBudget] = useState('');
   const [housingBudget, setHousingBudget] = useState('');
@@ -9,9 +11,38 @@ export default function BudgetPage() {
   const [subscriptionBudget, setSubscriptionBudget] = useState('');
   const [transportBudget, setTransportBudget] = useState('');
   const [savingsBudget, setSavingsBudget] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false); // État pour gérer la Snackbar
+  const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); // État pour le message d'erreur
 
   const handleSaveBudget = (e) => {
     e.preventDefault();
+
+    // Vérifier si tous les champs sont remplis
+    if (!totalBudget || !coursesBudget || !housingBudget || !leisureBudget || !subscriptionBudget || !transportBudget || !savingsBudget) {
+      setErrorSnackbarMessage("Tous les champs doivent être remplis.");
+      setOpenSnackbar(true); // Ouvrir le Snackbar d'erreur
+      return; // Ne pas procéder à l'enregistrement
+    }
+
+    // Convertir les champs en nombres
+    const total = parseFloat(totalBudget) || 0;
+    const courses = parseFloat(coursesBudget) || 0;
+    const housing = parseFloat(housingBudget) || 0;
+    const leisure = parseFloat(leisureBudget) || 0;
+    const subscription = parseFloat(subscriptionBudget) || 0;
+    const transport = parseFloat(transportBudget) || 0;
+    const savings = parseFloat(savingsBudget) || 0;
+
+    // Calculer la somme des autres budgets
+    const sumOfBudgets = courses + housing + leisure + subscription + transport + savings;
+
+    // Vérifier si totalBudget est égal à la somme
+    if (total !== sumOfBudgets) {
+      setErrorSnackbarMessage("Le budget total doit être égal à la somme des budgets des catégories.");
+      setOpenSnackbar(true); // Ouvrir le Snackbar d'erreur
+      return; // Ne pas procéder à l'enregistrement
+    }
+
     const budget = {
       totalBudget,
       coursesBudget,
@@ -20,7 +51,7 @@ export default function BudgetPage() {
       subscriptionBudget,
       transportBudget,
       savingsBudget,
-      // Assurez-vous d'ajouter studentId ici
+      studentId: user.id // Ajout de l'ID de l'utilisateur
     };
 
     fetch("http://localhost:8080/budget/add", {
@@ -28,8 +59,16 @@ export default function BudgetPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(budget)
     }).then(() => {
-      // Gestion de la redirection ou de l'affichage d'un message
+      console.log("Budget enregistré avec succès");
+      setOpenSnackbar(true); // Ouvrir le Snackbar de succès
+      setErrorSnackbarMessage(''); // Réinitialiser le message d'erreur
+    }).catch(error => {
+      console.error("Erreur lors de l'enregistrement du budget :", error);
     });
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false); // Fermer le Snackbar
   };
 
   return (
@@ -93,7 +132,22 @@ export default function BudgetPage() {
           </Button>
         </form>
       </Paper>
+
+      {/* Snackbar de succès */}
+      <Snackbar
+        open={openSnackbar && !errorSnackbarMessage}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        message="Budget enregistré avec succès !"
+      />
+
+      {/* Snackbar d'erreur */}
+      <Snackbar
+        open={openSnackbar && errorSnackbarMessage}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        message={errorSnackbarMessage}
+      />
     </Container>
   );
 }
-

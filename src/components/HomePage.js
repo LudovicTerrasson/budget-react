@@ -16,13 +16,13 @@ export default function HomePage() {
         </Typography>
         <Typography paragraph>
           Voici quelques conseils pour une gestion efficace de votre budget :
-          <ul>
-            <li>Fixez des limites pour chaque catégorie de dépenses.</li>
-            <li>Suivez régulièrement vos dépenses pour rester sur la bonne voie.</li>
-            <li>Prévoyez une réserve pour les imprévus.</li>
-            <li>Utilisez des outils pour visualiser et analyser vos dépenses.</li>
-          </ul>
         </Typography>
+        <ul>
+          <li>Fixez des limites pour chaque catégorie de dépenses.</li>
+          <li>Suivez régulièrement vos dépenses pour rester sur la bonne voie.</li>
+          <li>Prévoyez une réserve pour les imprévus.</li>
+          <li>Utilisez des outils pour visualiser et analyser vos dépenses.</li>
+        </ul>
         <Typography paragraph>
           Découvrez nos ressources et conseils pour améliorer vos compétences en gestion financière. Vous pouvez également consulter des vidéos éducatives pour approfondir vos connaissances.
         </Typography>

@@ -44,12 +44,14 @@ export default function ExpensesPage() {
       name: depense.name,
       montant: -depense.montant,
       categorie: depense.categorie,
+      type: 'depense'
     })),
     ...recettes.map(recette => ({
       id: recette.id,
       name: recette.name,
       montant: recette.montant,
       categorie: recette.categorie,
+      type: 'recette',
     }))
   ];
 
@@ -60,7 +62,7 @@ export default function ExpensesPage() {
     <Container>
       <Paper elevation={3} style={{ padding: '50px 20px', margin: '20px auto' }}>
         <Typography variant="h4" gutterBottom>
-          Liste des Dépenses et Recettes
+          Liste des dépenses et recettes
         </Typography>
         <TableContainer component={Paper} style={{ height: '500px', overflow: 'auto' }}>
           <Table>
@@ -73,7 +75,7 @@ export default function ExpensesPage() {
             </TableHead>
             <TableBody>
               {sortedCombinedData.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={`${item.id}-${item.type}`}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell align="right" style={{ color: item.montant < 0 ? 'red' : 'green' }}>
                     {item.montant >= 0 ? `+${item.montant.toFixed(2)}` : item.montant.toFixed(2)}€

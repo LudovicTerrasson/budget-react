@@ -11,7 +11,7 @@ export default function BudgetPage() {
   const [openSnackbar, setOpenSnackbar] = useState(false); // État pour gérer la Snackbar
   const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); // État pour le message d'erreur
 
-  const handleSaveBudget = (e) => {
+  const handleAddOperation = (e) => {
     e.preventDefault();
 
     // Vérifier si tous les champs sont remplis
@@ -22,10 +22,31 @@ export default function BudgetPage() {
     }
 
     // Convertir les champs en nombres
-    // const name = parseFloat(nameOp) || 0;
-    const montant = parseFloat(montantOp) || 0;
-    // const type = parseFloat(typeOp) || 0;
-    // const category = parseFloat(categoryOp) || 0;
+    const montantOp = parseFloat(montantOp) || 0;
+
+    const categories = [
+        { value: 'courses', label: 'Course' },
+        { value: 'housing', label: 'Logement' },
+        { value: 'leisure', label: 'Loisirs' },
+        { value: 'subscription', label: 'Abonnement' },
+        { value: 'transport', label: 'Transport' },
+        { value: 'savings', label: 'Epargne' }
+      ];
+
+    const types = [
+        { value: 'recette', label: 'Recette' },
+        { value: 'depense', label: 'Dépense' }
+        ];
+      
+    // Fonction pour gérer le changement de sélection
+    const handleCategoryChange = (event) => {
+        setCategoryOp(event.target.value);
+    };
+
+    const handleTypeChange = (event) => {
+        setTypeOp(event.target.value);
+    };
+
 
     const operation = {
       nameOperation: nameOp,
@@ -74,7 +95,7 @@ export default function BudgetPage() {
         <Typography variant="h4" gutterBottom>
           Définir le budget
         </Typography>
-        <form onSubmit={handleSaveBudget}>
+        <form onSubmit={handleAddOperation}>
           <TextField
             label="Nom de l'opération"
             value={nameOp}
@@ -89,20 +110,28 @@ export default function BudgetPage() {
             fullWidth
             margin="normal"
           />
-          <TextField
-            label="Type d'opération"
-            value={TypeOp}
-            onChange={(e) => setTypeOp(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Catégorie"
-            value={CategoryOp}
-            onChange={(e) => setCategoryOp(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
+          <label>
+            Sélectionnez le type de la transaction:
+            <select value={typeOp} onChange={handleTypeChange}>
+            <option value="">-- Choisissez un type --</option>
+            {types.map((type) => (
+                <option key={type.value} value={type.value}>
+                {type.label}
+                </option>
+            ))}
+            </select>
+          </label>
+          <label>
+            Sélectionnez la catégorie de la transaction:
+            <select value={categoryOp} onChange={handleCategoryChange}>
+            <option value="">-- Choisissez une catégorie --</option>
+            {categories.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                {cat.label}
+                </option>
+            ))}
+            </select>
+          </label>
           <Button type="submit" variant="contained" color="primary">
             Enregistrer l'opération
           </Button>

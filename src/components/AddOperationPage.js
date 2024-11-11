@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Paper, Typography, TextField, Button, Snackbar } from '@mui/material';
 import { useAuth } from '../context/AuthContext'; // Import du contexte d'authentification
+import { useNavigate } from 'react-router-dom';
 
 export default function BudgetPage() {
   const { user } = useAuth(); // Récupération de l'utilisateur connecté
@@ -15,22 +16,22 @@ export default function BudgetPage() {
     e.preventDefault();
 
     // Vérifier si tous les champs sont remplis
-    if (!nameOp || !montantOp || !typeOp || !tategoryOp) {
+    if (!nameOp || !montantOp || !typeOp || !categoryOp) {
       setErrorSnackbarMessage("Tous les champs doivent être remplis.");
       setOpenSnackbar(true); // Ouvrir le Snackbar d'erreur
       return; // Ne pas procéder à l'enregistrement
     }
 
     // Convertir les champs en nombres
-    const montantOp = parseFloat(montantOp) || 0;
+    const montantOpConv = parseFloat(montantOp) || 0;
 
     const categories = [
-        { value: 'courses', label: 'Course' },
-        { value: 'housing', label: 'Logement' },
-        { value: 'leisure', label: 'Loisirs' },
-        { value: 'subscription', label: 'Abonnement' },
-        { value: 'transport', label: 'Transport' },
-        { value: 'savings', label: 'Epargne' }
+        { value: 'coursesBudget', label: 'Course' },
+        { value: 'housingBudget', label: 'Logement' },
+        { value: 'leisureBudget', label: 'Loisirs' },
+        { value: 'subscriptionBudget', label: 'Abonnement' },
+        { value: 'transportBudget', label: 'Transport' },
+        { value: 'savingsBudget', label: 'Epargne' }
       ];
 
     const types = [
@@ -38,21 +39,11 @@ export default function BudgetPage() {
         { value: 'depense', label: 'Dépense' }
         ];
       
-    // Fonction pour gérer le changement de sélection
-    const handleCategoryChange = (event) => {
-        setCategoryOp(event.target.value);
-    };
-
-    const handleTypeChange = (event) => {
-        setTypeOp(event.target.value);
-    };
-
-
     const operation = {
-      nameOperation: nameOp,
-      montantOperation: montantOp,
-      typeOperation: typeOp,
-      categoryOperation: categoryOp,
+      nameOp,
+      montantOpConv,
+      typeOp,
+      categoryOp,
       studentId: user.id // Ajout de l'ID de l'utilisateur
     };
 
@@ -65,6 +56,7 @@ export default function BudgetPage() {
         console.log("Recette enregistrée avec succès");
         setOpenSnackbar(true); // Ouvrir le Snackbar de succès
         setErrorSnackbarMessage(''); // Réinitialiser le message d'erreur
+        navigate('/expenses');
         }).catch(error => {
         console.error("Erreur lors de l'enregistrement de la recette :", error);
         });
@@ -77,12 +69,22 @@ export default function BudgetPage() {
         console.log("Dépense enregistrée avec succès");
         setOpenSnackbar(true); // Ouvrir le Snackbar de succès
         setErrorSnackbarMessage(''); // Réinitialiser le message d'erreur
+        navigate('/expenses');
         }).catch(error => {
         console.error("Erreur lors de l'enregistrement de la dépense :", error);
         });
     }
 
     
+  };
+
+  // Fonction pour gérer le changement de sélection
+    const handleCategoryChange = (event) => {
+      setCategoryOp(event.target.value);
+  };
+
+  const handleTypeChange = (event) => {
+      setTypeOp(event.target.value);
   };
 
   const handleCloseSnackbar = () => {

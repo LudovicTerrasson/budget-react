@@ -23,6 +23,8 @@ function App() {
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/expenses" element={<ExpensesPage />} />
           <Route path="/transfer" element={<TransferPage />} />
+          <Route path="/add-operation" element={<AddOperationPage />} />
+          <Route path="/edit-operation/:type/:id" element={<EditOperationPage />} />
         </Routes>
       </div>
     </AuthProvider>

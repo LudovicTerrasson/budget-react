@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function ExpensesPage() {
   const { user } = useAuth();
   const [depenses, setDepenses] = useState([]);
   const [recettes, setRecettes] = useState([]);
+  const navigate = useNavigate(); // Utilisation de useNavigate pour la redirection
+  
   
   useEffect(() => {
     // Fonction pour récupérer les dépenses et les recettes depuis le backend
@@ -58,12 +61,30 @@ export default function ExpensesPage() {
   // Tri des données combinées par ID du plus grand au plus petit
   const sortedCombinedData = combinedData.sort((a, b) => b.id - a.id);
 
+  // Fonction pour naviguer vers la page AddOperationPage.js
+  const handleAddOperation = () => {
+    navigate('/add-operation'); // Redirige vers le chemin configuré pour AddOperationPage
+  };
+  
+  // Fonction pour naviguer vers la page de modification
+  const handleEditOperation = (id, type) => {
+    navigate(`/edit-operation/${type}/${id}`); // Redirige vers le chemin configuré pour EditOperationPage
+  };
+
   return (
     <Container>
       <Paper elevation={3} style={{ padding: '50px 20px', margin: '20px auto' }}>
         <Typography variant="h4" gutterBottom>
           Liste des dépenses et recettes
         </Typography>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={handleAddOperation} 
+          style={{ marginBottom: '20px' }}
+        >
+          Ajouter
+        </Button>
         <TableContainer component={Paper} style={{ height: '500px', overflow: 'auto' }}>
           <Table>
             <TableHead>
@@ -71,6 +92,7 @@ export default function ExpensesPage() {
                 <TableCell><strong>Nom</strong></TableCell>
                 <TableCell align="right"><strong>Montant (€)</strong></TableCell>
                 <TableCell align="right"><strong>Catégorie</strong></TableCell>
+                <TableCell align="center"><strong>Actions</strong></TableCell> 
               </TableRow>
             </TableHead>
             <TableBody>
@@ -81,6 +103,15 @@ export default function ExpensesPage() {
                     {item.montant >= 0 ? `+${item.montant.toFixed(2)}` : item.montant.toFixed(2)}€
                   </TableCell>
                   <TableCell align="right">{item.categorie}</TableCell>
+                  <TableCell align="center">
+                    <Button 
+                      variant="outlined" 
+                      color="primary" 
+                      onClick={() => handleEditOperation(item.id, item.type)}
+                    >
+                      Modifier
+                    </Button>
+                  </TableCell> 
                 </TableRow>
               ))}
             </TableBody>

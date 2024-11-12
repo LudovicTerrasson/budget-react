@@ -29,14 +29,15 @@ export default function AddOperationPage() {
     
       
     const operation = {
-      nameOp,
-      montantOpConv,
-      typeOp,
       categoryOp,
+      montantOpConv,
+      nameOp,
       studentId: user.id // Ajout de l'ID de l'utilisateur
     };
 
-    if (typeOp === 'Recette'){
+    console.log(operation,typeOp)
+
+    if (typeOp === "recette"){
         fetch("http://localhost:8080/recette/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

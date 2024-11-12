@@ -3,7 +3,7 @@ import { Container, Paper, Typography, TextField, Button, Snackbar } from '@mui/
 import { useAuth } from '../context/AuthContext'; // Import du contexte d'authentification
 import { useNavigate } from 'react-router-dom';
 
-export default function BudgetPage() {
+export default function AddOperationPage() {
   const { user } = useAuth(); // Récupération de l'utilisateur connecté
   const [nameOp, setNameOp] = useState('');
   const [montantOp, setMontantOp] = useState('');
@@ -11,6 +11,7 @@ export default function BudgetPage() {
   const [categoryOp, setCategoryOp] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false); // État pour gérer la Snackbar
   const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); // État pour le message d'erreur
+  const navigate = useNavigate();
 
   const handleAddOperation = (e) => {
     e.preventDefault();
@@ -25,19 +26,7 @@ export default function BudgetPage() {
     // Convertir les champs en nombres
     const montantOpConv = parseFloat(montantOp) || 0;
 
-    const categories = [
-        { value: 'coursesBudget', label: 'Course' },
-        { value: 'housingBudget', label: 'Logement' },
-        { value: 'leisureBudget', label: 'Loisirs' },
-        { value: 'subscriptionBudget', label: 'Abonnement' },
-        { value: 'transportBudget', label: 'Transport' },
-        { value: 'savingsBudget', label: 'Epargne' }
-      ];
-
-    const types = [
-        { value: 'recette', label: 'Recette' },
-        { value: 'depense', label: 'Dépense' }
-        ];
+    
       
     const operation = {
       nameOp,
@@ -47,7 +36,7 @@ export default function BudgetPage() {
       studentId: user.id // Ajout de l'ID de l'utilisateur
     };
 
-    if (typeOp == 'Recette'){
+    if (typeOp === 'Recette'){
         fetch("http://localhost:8080/recette/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -60,7 +49,8 @@ export default function BudgetPage() {
         }).catch(error => {
         console.error("Erreur lors de l'enregistrement de la recette :", error);
         });
-    }else{
+      }
+      else{
         fetch("http://localhost:8080/depense/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,12 +64,24 @@ export default function BudgetPage() {
         console.error("Erreur lors de l'enregistrement de la dépense :", error);
         });
     }
-
-    
   };
 
+  const categories = [
+    { value: 'coursesBudget', label: 'Course' },
+    { value: 'housingBudget', label: 'Logement' },
+    { value: 'leisureBudget', label: 'Loisirs' },
+    { value: 'subscriptionBudget', label: 'Abonnement' },
+    { value: 'transportBudget', label: 'Transport' },
+    { value: 'savingsBudget', label: 'Epargne' }
+  ];
+
+  const types = [
+      { value: 'recette', label: 'Recette' },
+      { value: 'depense', label: 'Dépense' }
+      ];
+
   // Fonction pour gérer le changement de sélection
-    const handleCategoryChange = (event) => {
+  const handleCategoryChange = (event) => {
       setCategoryOp(event.target.value);
   };
 

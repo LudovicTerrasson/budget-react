@@ -8,6 +8,8 @@ import DashboardPage from './components/DashboardPage';
 import BudgetPage from './components/BudgetPage';
 import ExpensesPage from './components/ExpensesPage';
 import TransferPage from './components/TransferPage';
+import AddOperationPage from './components/AddOperationPage';
+import EditOperationPage from './components/EditOperationPage';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {

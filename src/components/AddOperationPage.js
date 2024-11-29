@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 export default function AddOperationPage() {
   const { user } = useAuth(); // Récupération de l'utilisateur connecté
-  const [nameOp, setNameOp] = useState('');
+  const [name, setNameOp] = useState('');
   const [montantOp, setMontantOp] = useState('');
   const [typeOp, setTypeOp] = useState('');
-  const [categoryOp, setCategoryOp] = useState('');
+  const [categorie, setCategoryOp] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false); // État pour gérer la Snackbar
   const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); // État pour le message d'erreur
   const navigate = useNavigate();
@@ -17,21 +17,21 @@ export default function AddOperationPage() {
     e.preventDefault();
 
     // Vérifier si tous les champs sont remplis
-    if (!nameOp || !montantOp || !typeOp || !categoryOp) {
+    if (!name || !montantOp || !typeOp || !categorie) {
       setErrorSnackbarMessage("Tous les champs doivent être remplis.");
       setOpenSnackbar(true); // Ouvrir le Snackbar d'erreur
       return; // Ne pas procéder à l'enregistrement
     }
 
     // Convertir les champs en nombres
-    const montantOpConv = parseFloat(montantOp) || 0;
+    const montant = parseFloat(montantOp) || 0;
 
     
       
     const operation = {
-      categoryOp,
-      montantOpConv,
-      nameOp,
+      categorie,
+      montant,
+      name,
       studentId: user.id // Ajout de l'ID de l'utilisateur
     };
 
@@ -103,7 +103,7 @@ export default function AddOperationPage() {
         <form onSubmit={handleAddOperation}>
           <TextField
             label="Nom de l'opération"
-            value={nameOp}
+            value={name}
             onChange={(e) => setNameOp(e.target.value)}
             fullWidth
             margin="normal"
@@ -128,7 +128,7 @@ export default function AddOperationPage() {
           </label>
           <label>
             Sélectionnez la catégorie de la transaction:
-            <select value={categoryOp} onChange={handleCategoryChange}>
+            <select value={categorie} onChange={handleCategoryChange}>
             <option value="">-- Choisissez une catégorie --</option>
             {categories.map((cat) => (
                 <option key={cat.value} value={cat.value}>

@@ -98,7 +98,7 @@ export default function AddOperationPage() {
     <Container>
       <Paper elevation={3} style={{ padding: '50px 20px', margin: '20px auto' }}>
         <Typography variant="h4" gutterBottom>
-          Définir le budget
+          Définir l'opération
         </Typography>
         <form onSubmit={handleAddOperation}>
           <TextField
@@ -148,7 +148,7 @@ export default function AddOperationPage() {
         open={openSnackbar && !errorSnackbarMessage}
         autoHideDuration={3000}
         onClose={handleCloseSnackbar}
-        message="Budget enregistré avec succès !"
+        message="Opération enregistré avec succès !"
       />
 
       {/* Snackbar d'erreur */}

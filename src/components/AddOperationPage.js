@@ -32,7 +32,7 @@ export default function AddOperationPage() {
       categorie,
       montant,
       name,
-      studentId: user.id // Ajout de l'ID de l'utilisateur
+      studentId: user.id, // Ajout de l'ID de l'utilisateur
     };
     console.log(operation);
 

@@ -24,6 +24,7 @@ export default function ExpensesPage() {
           throw new Error(`HTTP error! status: ${responseDepense.status}`);
         }
         const dataDepense = await responseDepense.json();
+        console.log(dataDepense);
         setDepenses(dataDepense);
 
         // Vérifier la réponse pour les recettes
@@ -31,6 +32,7 @@ export default function ExpensesPage() {
           throw new Error(`HTTP error! status: ${responseRecette.status}`);
         }
         const dataRecette = await responseRecette.json();
+        console.log(dataRecette);
         setRecettes(dataRecette);
       } catch (error) {
         console.error("Erreur lors de la récupération des données:", error);
@@ -48,7 +50,8 @@ export default function ExpensesPage() {
       name: depense.name,
       montant: -depense.montant,
       categorie: depense.categorie,
-      type: 'depense'
+      type: 'depense',
+      date : new Date(depense.textdate)
     })),
     ...recettes.map(recette => ({
       id: recette.id,
@@ -56,11 +59,14 @@ export default function ExpensesPage() {
       montant: recette.montant,
       categorie: recette.categorie,
       type: 'recette',
+      date : new Date(recette.textdate)
     }))
   ];
 
+  console.log(combinedData);
+
   // Tri des données combinées par ID du plus grand au plus petit
-  const sortedCombinedData = combinedData.sort((a, b) => b.id - a.id);
+  const sortedCombinedData = combinedData.sort((a, b) => b.date - a.date);
 
   // Fonction pour naviguer vers la page AddOperationPage.js
   const handleAddOperation = () => {

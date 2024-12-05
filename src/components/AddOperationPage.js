@@ -34,6 +34,7 @@ export default function AddOperationPage() {
       name,
       studentId: user.id // Ajout de l'ID de l'utilisateur
     };
+    console.log(operation);
 
     console.log(operation,typeOp)
 

@@ -13,7 +13,7 @@ export default function TransferPage() {
   const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); // État pour le message d'erreur
   const navigate = useNavigate();
 
-  const handleAddOperation = (e) => {
+  const handleAddOperation = async (e) => {
     e.preventDefault();
 
     // Vérifier si tous les champs sont remplis
@@ -33,60 +33,49 @@ export default function TransferPage() {
     const transfer_giver = {
       categorie,
       montant,
-      name_for,
+      name : name_for,
       studentId: user.id // Ajout de l'ID de l'utilisateur
     };
 
     console.log(transfer_giver);
 
-    // Initialisation de l'objet `transfer_receiver`
-let transfer_receiver = null;
 
-const fetchStudentId = async (name_other_user) => {
-    try {
-        const response = await fetch(`http://localhost:8080/student/getId?pseudo=${encodeURIComponent(name_other_user)}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
+
+    const fetchStudentId = async (nameOtherUser) => {
+      try {
+        const response = await fetch(`http://localhost:8080/student/getId?pseudo=${nameOtherUser}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
         });
 
         if (!response.ok) {
-            throw new Error("Erreur lors de l'obtention de l'id : " + response.statusText);
+          throw new Error("Erreur lors de l'obtention de l'id : " + response.statusText);
         }
 
         const otherId = await response.text(); // Utilisez response.json() si l'API retourne un JSON
         console.log("ID du destinataire :", otherId);
 
         return otherId;
-    } catch (error) {
+      } catch (error) {
         console.error("Erreur lors de l'obtention de l'id du destinataire :", error);
         throw error; // Réémet l'erreur si nécessaire
-    }
-};
+      }
+    };
 
-// Récupérer l'ID et mettre à jour `transfer_receiver`
-const initializeTransferReceiver = async (nameOtherUser) => {
-    try {
-        const id = await fetchStudentId(nameOtherUser);
-        console.log("ID obtenu :", id);
+    const id = Number(await fetchStudentId(name_other_user));
 
-        // Mettre à jour l'objet `transfer_receiver`
-        transfer_receiver = {
-            categorie,
-            montant,
-            name_from,
-            studentId: id, // Ajout de l'ID de l'utilisateur
-        };
+    console.log("ID obtenu :", id);
 
-        console.log("Objet transfer_receiver mis à jour :", transfer_receiver);
-    } catch (error) {
-        console.error("Erreur lors de l'initialisation de transfer_receiver :", error);
-    }
-};
+    // Initialisation de l'objet `transfer_receiver`
+    const transfer_receiver = {
+      categorie,
+      montant,
+      name : name_from,
+      studentId: id // Ajout de l'ID de l'utilisateur
+    };
+    console.log(transfer_receiver);
 
-// Appeler la fonction pour initialiser `transfer_receiver`
-initializeTransferReceiver("nom_utilisateur");
 
-  
 
     fetch("http://localhost:8080/depense/add", {
       method: "POST",

@@ -43,18 +43,20 @@ export default function EditOperationPage() {
     fetchOperationDetails();
   }, [id, type]);
 
+
   // Fonction pour gérer la validation des modifications
   const handleSubmit = async () => {
     try {
-      const updatedOperation = { id, name, montant: parseFloat(montant), categorie };
+      const updatedOperation = { id, categorie, montant: parseFloat(montant), name };
       const response = await fetch(`http://localhost:8080/${type}/update`, {
-        method: 'PUT',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedOperation)
       });
       if (response.ok) {
         setOpenSnackbar(true); // Ouvrir le Snackbar de confirmation
         setTimeout(() => navigate('/expenses'), 1000); // Redirection après 1s
+        console.log("Opération mise à jour avec succès");
       } else {
         console.error("Erreur lors de la mise à jour de l'opération");
       }

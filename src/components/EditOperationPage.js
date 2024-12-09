@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Paper, Typography, TextField, MenuItem, Button, Snackbar } from '@mui/material';
+import { Container, Paper, Typography, TextField, Button, Snackbar, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
 
 export default function EditOperationPage() {
   const { id, type } = useParams(); // Récupération des paramètres id et type depuis l'URL
   const navigate = useNavigate();
-  
   const [name, setName] = useState('');
   const [montant, setMontant] = useState('');
   const [categorie, setCategorie] = useState('');
@@ -23,7 +22,6 @@ export default function EditOperationPage() {
   ];
 
   useEffect(() => {
-    // Charger les détails de l'opération depuis le serveur
     const fetchOperationDetails = async () => {
       try {
         const response = await fetch(`http://localhost:8080/${type}/get/${id}`);

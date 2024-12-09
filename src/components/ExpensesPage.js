@@ -78,6 +78,19 @@ export default function ExpensesPage() {
     navigate(`/edit-operation/${type}/${id}`); // Redirige vers le chemin configuré pour EditOperationPage
   };
 
+  // Fonction pour traduire les catégories
+const translateCategory = (category) => {
+  const translations = {
+    coursesBudget: "Courses",
+    housingBudget: "Logement",
+    leisureBudget: "Loisirs",
+    subscriptionBudget: "Abonnement",
+    transportBudget: "Transport",
+    savingsBudget: "Épargne",
+  };
+  return translations[category] ; 
+  };
+
   return (
     <Container>
       <Paper elevation={3} style={{ padding: '50px 20px', margin: '20px auto' }}>
@@ -109,7 +122,7 @@ export default function ExpensesPage() {
                   <TableCell align="right" style={{ color: item.montant < 0 ? 'red' : 'green' }}>
                     {item.montant >= 0 ? `+${item.montant.toFixed(2)}` : item.montant.toFixed(2)}€
                   </TableCell>
-                  <TableCell align="right">{item.categorie}</TableCell>
+                  <TableCell align="right">{translateCategory(item.categorie)}</TableCell>
                   <TableCell align="center">
                     {!(item.name.startsWith("De") || item.name.startsWith("Pour")) && (
                       <Button

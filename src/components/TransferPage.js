@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Container, Paper, Typography, TextField, Button, Snackbar } from '@mui/material';
-import { useAuth } from '../context/AuthContext'; // Import du contexte d'authentification
+import { Container, Paper, Typography, TextField, Button, Snackbar, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
+import { useAuth } from '../context/AuthContext'; 
 import { useNavigate } from 'react-router-dom';
 
 export default function TransferPage() {
-  const { user } = useAuth(); // Récupération de l'utilisateur connecté
+  const { user } = useAuth(); 
   const [name, setNameTr] = useState('');
   const [montantTr, setMontantTr] = useState('');
   const [categorie, setCategoryTr] = useState('');
@@ -143,7 +143,7 @@ export default function TransferPage() {
     <Container>
       <Paper elevation={3} style={{ padding: '50px 20px', margin: '20px auto' }}>
         <Typography variant="h4" gutterBottom>
-          Définir le transfer
+          Définir le transfert
         </Typography>
         <form onSubmit={handleAddOperation}>
           <TextField
@@ -167,19 +167,23 @@ export default function TransferPage() {
             fullWidth
             margin="normal"
           />
-          <label>
-            Sélectionnez la catégorie de la transaction:
-            <select value={categorie} onChange={handleCategoryChange}>
-              <option value="">-- Choisissez une catégorie --</option>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="categorie-label">Catégorie de la Transaction</InputLabel>
+            <Select
+              labelId="categorie-label"
+              value={categorie}
+              onChange={handleCategoryChange}
+              label="Catégorie de la Transaction"
+            >
               {categories.map((cat) => (
-                <option key={cat.value} value={cat.value}>
+                <MenuItem key={cat.value} value={cat.value}>
                   {cat.label}
-                </option>
+                </MenuItem>
               ))}
-            </select>
-          </label>
+            </Select>
+          </FormControl>
           <Button type="submit" variant="contained" color="primary">
-            Enregistrer le transfer
+            Enregistrer le transfert
           </Button>
         </form>
       </Paper>

@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function Appbar() {
   const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const navigate = useNavigate(); // Ajouter useNavigate ici
+  const navigate = useNavigate(); 
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,7 +42,7 @@ export default function Appbar() {
           {user ? (
             <Box>
               <Typography variant="body1" sx={{ mr: 2 }}>{user.name}</Typography>
-              <Button color="inherit" onClick={handleLogout}>Déconnexion</Button> {/* Modifier ici */}
+              <Button color="inherit" onClick={handleLogout}>Déconnexion</Button> 
             </Box>
           ) : (
             <Box>

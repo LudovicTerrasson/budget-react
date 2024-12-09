@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Paper, Typography, TextField, Button, Snackbar } from '@mui/material';
+import { Container, Paper, Typography, TextField, Button, Snackbar, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
 import { useAuth } from '../context/AuthContext'; // Import du contexte d'authentification
 import { useNavigate } from 'react-router-dom';
 
@@ -9,8 +9,8 @@ export default function AddOperationPage() {
   const [montantOp, setMontantOp] = useState('');
   const [typeOp, setTypeOp] = useState('');
   const [categorie, setCategoryOp] = useState('');
-  const [openSnackbar, setOpenSnackbar] = useState(false); // État pour gérer la Snackbar
-  const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); // État pour le message d'erreur
+  const [openSnackbar, setOpenSnackbar] = useState(false); 
+  const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); 
   const navigate = useNavigate();
 
   const handleAddOperation = (e) => {
@@ -32,7 +32,7 @@ export default function AddOperationPage() {
       categorie,
       montant,
       name,
-      studentId: user.id, // Ajout de l'ID de l'utilisateur
+      studentId: user.id, 
     };
     console.log(operation);
 
@@ -116,28 +116,36 @@ export default function AddOperationPage() {
             fullWidth
             margin="normal"
           />
-          <label>
-            Sélectionnez le type de la transaction:
-            <select value={typeOp} onChange={handleTypeChange}>
-            <option value="">-- Choisissez un type --</option>
-            {types.map((type) => (
-                <option key={type.value} value={type.value}>
-                {type.label}
-                </option>
-            ))}
-            </select>
-          </label>
-          <label>
-            Sélectionnez la catégorie de la transaction:
-            <select value={categorie} onChange={handleCategoryChange}>
-            <option value="">-- Choisissez une catégorie --</option>
-            {categories.map((cat) => (
-                <option key={cat.value} value={cat.value}>
-                {cat.label}
-                </option>
-            ))}
-            </select>
-          </label>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="type-label">Type de l'opération</InputLabel>
+            <Select
+              labelId="type-label"
+              value={typeOp}
+              onChange={handleTypeChange}
+              label="Type de l'opération"
+            >
+              {types.map((type) => (
+                <MenuItem key={type.value} value={type.value}>
+                  {type.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="categorie-label">Catégorie de l'opération</InputLabel>
+            <Select
+              labelId="categorie-label"
+              value={categorie}
+              onChange={handleCategoryChange}
+              label="Catégorie de l'opération"
+            >
+              {categories.map((cat) => (
+                <MenuItem key={cat.value} value={cat.value}>
+                  {cat.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <Button type="submit" variant="contained" color="primary">
             Enregistrer l'opération
           </Button>

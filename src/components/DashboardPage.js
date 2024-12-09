@@ -37,7 +37,7 @@ export default function DashboardPage() {
           console.log(dataDepenses);
 
           if (responseDepenses.ok) {
-            calculateExpensesByCategory(dataDepenses); // Calculer les totaux des dépenses par catégorie
+            calculateExpensesByCategory(dataDepenses); 
           } else {
             console.error("Erreur lors de la récupération des dépenses :", dataDepenses);
             setExpensesByCategory({}); // Vider les dépenses par catégorie si erreur
@@ -111,7 +111,6 @@ export default function DashboardPage() {
                 sumsByCategory.Savings += expense.montant;
                 break;
             default:
-                // On pourrait gérer les catégories non prises en charge ici si besoin
                 break;
         }
     });
@@ -170,8 +169,8 @@ const calculateRecettesByCategory = (recettes) => {
   const categories = Object.keys(totalsBudget);
   const categoriesInFrench = categories.map((category) => categoryNames[category]);
 
-  const budgets = categories.map((category) => totalsBudget[category] || 0); // Les montants de budget par catégorie
-  const expenses = categories.map((category) => expensesByCategory[category] || 0); // Les montants de dépenses par catégorie
+  const budgets = categories.map((category) => totalsBudget[category] || 0);
+  const expenses = categories.map((category) => expensesByCategory[category] || 0); 
   const recettes = categories.map((category) => recettesByCategory[category] || 0);
 
   return (
@@ -215,7 +214,6 @@ const calculateRecettesByCategory = (recettes) => {
               </table>
             </Grid>
 
-            {/* Section pour le BarChart */}
             <Grid item xs={12}>
               <Typography variant="h5" gutterBottom>
                 Avancée des dépenses par catégorie
@@ -228,9 +226,9 @@ const calculateRecettesByCategory = (recettes) => {
                   }
                 ]}
                 series={[
-                  { name: 'Dépenses', data: expenses, color: '#ff6347', label: 'Depense',stack: false }, // Série des dépenses
-                  { name: 'Budget', data: budgets, color: '#8884d8' , label: 'Budget initial',stack: true}, //série des budgets
-                  { name: 'Recettes', data: recettes, color: '#82ca9d', label: 'Recette',stack: true, }, // Série des recettes
+                  { name: 'Dépenses', data: expenses, color: '#ff6347', label: 'Depense',stack: false }, 
+                  { name: 'Budget', data: budgets, color: '#8884d8' , label: 'Budget initial',stack: true}, 
+                  { name: 'Recettes', data: recettes, color: '#82ca9d', label: 'Recette',stack: true, }, 
                 ]}
                 height={400} 
                 margin={{ left: 75 }}

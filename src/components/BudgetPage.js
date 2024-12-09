@@ -3,7 +3,7 @@ import { Container, Paper, Typography, TextField, Button, Snackbar } from '@mui/
 import { useAuth } from '../context/AuthContext'; // Import du contexte d'authentification
 
 export default function BudgetPage() {
-  const { user } = useAuth(); // Récupération de l'utilisateur connecté
+  const { user } = useAuth(); 
   const [totalBudget, setTotalBudget] = useState('');
   const [coursesBudget, setCoursesBudget] = useState('');
   const [housingBudget, setHousingBudget] = useState('');
@@ -11,8 +11,8 @@ export default function BudgetPage() {
   const [subscriptionBudget, setSubscriptionBudget] = useState('');
   const [transportBudget, setTransportBudget] = useState('');
   const [savingsBudget, setSavingsBudget] = useState('');
-  const [openSnackbar, setOpenSnackbar] = useState(false); // État pour gérer la Snackbar
-  const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); // État pour le message d'erreur
+  const [openSnackbar, setOpenSnackbar] = useState(false); 
+  const [errorSnackbarMessage, setErrorSnackbarMessage] = useState(''); 
 
   const handleSaveBudget = (e) => {
     e.preventDefault();
@@ -33,7 +33,6 @@ export default function BudgetPage() {
     const transport = parseFloat(transportBudget) || 0;
     const savings = parseFloat(savingsBudget) || 0;
 
-    // Calculer la somme des autres budgets
     const sumOfBudgets = courses + housing + leisure + subscription + transport + savings;
 
     // Vérifier si totalBudget est égal à la somme
@@ -52,7 +51,7 @@ export default function BudgetPage() {
       subscriptionBudget,
       transportBudget,
       savingsBudget,
-      studentId: user.id // Ajout de l'ID de l'utilisateur
+      studentId: user.id 
     };
 
     if (coursesBudget<0 || housingBudget<0 || leisureBudget<0 || subscriptionBudget<0 || transportBudget<0 || savingsBudget<0){

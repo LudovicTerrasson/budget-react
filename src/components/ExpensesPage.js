@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
-import {  Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -10,15 +10,15 @@ export default function ExpensesPage() {
   const [depenses, setDepenses] = useState([]);
   const [recettes, setRecettes] = useState([]);
   const navigate = useNavigate(); // Utilisation de useNavigate pour la redirection
-  
-  
+
+
   useEffect(() => {
     // Fonction pour récupérer les dépenses et les recettes depuis le backend
     const fetchData = async () => {
       try {
         const responseDepense = await fetch(`http://localhost:8080/depense/getDepense/${user.id}`);
         const responseRecette = await fetch(`http://localhost:8080/recette/getRecette/${user.id}`);
-        
+
         // Vérifier la réponse pour les dépenses
         if (!responseDepense.ok) {
           throw new Error(`HTTP error! status: ${responseDepense.status}`);
@@ -39,9 +39,9 @@ export default function ExpensesPage() {
       }
     };
 
-    fetchData(); 
+    fetchData();
 
-  }, [user.id]); 
+  }, [user.id]);
 
   // Combinaison des dépenses et des recettes dans un seul tableau
   const combinedData = [
@@ -51,7 +51,7 @@ export default function ExpensesPage() {
       montant: -depense.montant,
       categorie: depense.categorie,
       type: 'depense',
-      date : new Date(depense.textdate)
+      date: new Date(depense.textdate)
     })),
     ...recettes.map(recette => ({
       id: recette.id,
@@ -59,7 +59,7 @@ export default function ExpensesPage() {
       montant: recette.montant,
       categorie: recette.categorie,
       type: 'recette',
-      date : new Date(recette.textdate)
+      date: new Date(recette.textdate)
     }))
   ];
 
@@ -72,7 +72,7 @@ export default function ExpensesPage() {
   const handleAddOperation = () => {
     navigate('/add-operation'); // Redirige vers le chemin configuré pour AddOperationPage
   };
-  
+
   // Fonction pour naviguer vers la page de modification
   const handleEditOperation = (id, type) => {
     navigate(`/edit-operation/${type}/${id}`); // Redirige vers le chemin configuré pour EditOperationPage
@@ -84,10 +84,10 @@ export default function ExpensesPage() {
         <Typography variant="h4" gutterBottom>
           Liste des dépenses et recettes
         </Typography>
-        <Button 
-          variant="contained" 
-          color="primary" 
-          onClick={handleAddOperation} 
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddOperation}
           style={{ marginBottom: '20px' }}
         >
           Ajouter
@@ -99,7 +99,7 @@ export default function ExpensesPage() {
                 <TableCell><strong>Nom</strong></TableCell>
                 <TableCell align="right"><strong>Montant (€)</strong></TableCell>
                 <TableCell align="right"><strong>Catégorie</strong></TableCell>
-                <TableCell align="center"><strong>Actions</strong></TableCell> 
+                <TableCell align="center"><strong>Actions</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -111,14 +111,16 @@ export default function ExpensesPage() {
                   </TableCell>
                   <TableCell align="right">{item.categorie}</TableCell>
                   <TableCell align="center">
-                    <Button 
-                      variant="outlined" 
-                      color="primary" 
-                      onClick={() => handleEditOperation(item.id, item.type)}
-                    >
-                      Modifier
-                    </Button>
-                  </TableCell> 
+                    {!(item.name.startsWith("De") || item.name.startsWith("Pour")) && (
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleEditOperation(item.id, item.type)}
+                      >
+                        Modifier
+                      </Button>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

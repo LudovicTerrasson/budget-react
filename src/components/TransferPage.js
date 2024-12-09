@@ -24,8 +24,15 @@ export default function TransferPage() {
     }
 
 
+
     // Convertir les champs en nombres
     const montant = parseFloat(montantTr) || 0;
+
+    if (montant<0){
+      setErrorSnackbarMessage("Le montant doit être positif.");
+      setOpenSnackbar(true);
+      return;
+    }
 
     const name_from = "De " + user.name + " : " + name;
     const name_for = "Pour " + name_other_user + " : " + name;
@@ -65,6 +72,12 @@ export default function TransferPage() {
     const id = Number(await fetchStudentId(name_other_user));
 
     console.log("ID obtenu :", id);
+
+    if (id === -1){
+      setErrorSnackbarMessage("L'utilisateur n'existe pas.");
+      setOpenSnackbar(true);
+      return;
+    }
 
     // Initialisation de l'objet `transfer_receiver`
     const transfer_receiver = {

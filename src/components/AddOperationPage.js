@@ -23,7 +23,7 @@ export default function AddOperationPage() {
       return; // Ne pas procéder à l'enregistrement
     }
 
-    // Convertir les champs en nombres
+    // Convertir le champ en nombre
     const montant = parseFloat(montantOp) || 0;
 
     

@@ -43,6 +43,7 @@ export default function BudgetPage() {
       return; // Ne pas procéder à l'enregistrement
     }
 
+
     const budget = {
       totalBudget,
       coursesBudget,
@@ -53,6 +54,12 @@ export default function BudgetPage() {
       savingsBudget,
       studentId: user.id // Ajout de l'ID de l'utilisateur
     };
+
+    if (coursesBudget<0 || housingBudget<0 || leisureBudget<0 || subscriptionBudget<0 || transportBudget<0 || savingsBudget<0){
+      setErrorSnackbarMessage("Les budgets ne peuvent pas être négatifs.");
+      setOpenSnackbar(true); // Ouvrir le Snackbar d'erreur
+      return; // Ne pas procéder à l'enregistrement
+    }
 
     fetch("http://localhost:8080/budget/add", {
       method: "POST",

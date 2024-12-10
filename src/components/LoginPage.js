@@ -11,33 +11,68 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const handleLogin = (e) => {
+ 
+
+  const checkLogin = async (e) => {
     e.preventDefault();
 
-    // Vérification si l'un des champs est vide
-    if (!name || !password) {
-      setError('Veuillez remplir tous les champs.');
-      setOpenSnackbar(true);
-      return;
-    }
+    try {
+        // Appel à l'API back-end
+        const response = await fetch('http://localhost:8080/student/validate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, password }),
+        });
+        console.log(JSON.stringify({ name, password }));
 
-    fetch('http://localhost:8080/student/getAll')
-      .then((response) => response.json())
-      .then((data) => {
-        const user = data.find((u) => u.name === name && u.password === password);
-        if (user) {
-          login(user);
-          navigate('/');
+        // Lecture de la réponse JSON
+        const isValid = await response.json();
+        console.log(isValid);
+        // Mise à jour de l'état en fonction de la réponse
+        if (isValid) {
+          handleLogin(e);
         } else {
           setError('Nom d’utilisateur ou mot de passe incorrect.');
           setOpenSnackbar(true);
         }
-      })
-      .catch(() => {
-        setError('Une erreur est survenue. Veuillez réessayer plus tard.');
+    } catch (error) {
+        console.error('Erreur lors de la connexion :', error);
+        setError('Erreur serveur. Veuillez réessayer.');
         setOpenSnackbar(true);
-      });
-  };
+    }
+};
+
+const handleLogin = (e) => {
+  e.preventDefault();
+
+  // Vérification si l'un des champs est vide
+  if (!name || !password) {
+    setError('Veuillez remplir tous les champs.');
+    setOpenSnackbar(true);
+    return;
+  }
+
+  fetch('http://localhost:8080/student/getAll')
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      const user = data.find((u) => u.name === name);
+      console.log(user);
+      if (user) {
+        login(user);
+        navigate('/');
+      } else {
+        setError('Nom d’utilisateur ou mot de passe incorrect.');
+        setOpenSnackbar(true);
+      }
+    })
+    .catch(() => {
+      setError('Une erreur est survenue. Veuillez réessayer plus tard.');
+      setOpenSnackbar(true);
+    });
+};
 
   // Fonction pour fermer le Snackbar
   const handleCloseSnackbar = () => {
@@ -72,7 +107,7 @@ export default function LoginPage() {
               setError(''); // Réinitialiser l'erreur lorsque l'utilisateur tape
             }}
           />
-          <Button variant="contained" color="primary" onClick={handleLogin}>
+          <Button variant="contained" color="primary" onClick={checkLogin}>
             Connexion
           </Button>
         </Box>
